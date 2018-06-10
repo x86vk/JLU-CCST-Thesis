@@ -1,0 +1,175 @@
+\documentclass[openany,oneside]{book}
+
+\usepackage{jluthesisUTF8}
+%\usepackage{gbt7714}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{multirow}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{pgf}
+%\usepackage{cite}
+
+\makeatletter
+\newenvironment{breakablealgorithm}
+{% \begin{breakablealgorithm}
+    \begin{center}
+        \refstepcounter{algorithm}% New algorithm
+        \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
+        \renewcommand{\caption}[2][\relax]{% Make a new \caption
+            {\raggedright\textbf{\ALG@name~\thealgorithm} ##2\par}%
+            \ifx\relax##1\relax % #1 is \relax
+            \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
+            \else % #1 is not \relax
+            \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
+            \fi
+            \kern2pt\hrule\kern2pt
+        }
+    }{% \end{breakablealgorithm}
+        \kern2pt\hrule\relax% \@fs@post for \@fs@ruled
+    \end{center}
+}
+\makeatother
+
+\usetikzlibrary{arrows}
+\usepackage{xeCJK}
+
+\floatname{algorithm}{算法}  
+\renewcommand{\algorithmicrequire}{\textbf{输入:}}  
+\renewcommand{\algorithmicensure}{\textbf{输出:}} 
+
+%opening
+\hypersetup{
+    pdftitle    = {your pdf title},
+    pdfsubject  = {your pdf subject},
+    pdfkeywords = {your pdf keywords},
+    pdfauthor   = {your name}
+}
+
+
+
+\begin{document}
+
+\frontmatter
+\sloppy % 解决中英文混排的断行问题，会加入间距，但不会影响断行 ????
+
+\input{preface/cover}
+
+\pagenumbering{Roman} 
+%\pdfbookmark[0]{目~~~~录}{contents}
+
+\tableofcontents
+{\xiaosi}
+%{\fontsize \fontsize{12.05pt}{14.45pt}\selectfont}
+% 清除目录后面空页的页眉和页脚
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+%%% 正文
+\mainmatter
+\defaultfont                        % 正文使用默认字体，小四，宋体
+
+\chapter{绪论}
+\section{研究背景及意义}
+
+研究背景及意义，可用cite去引用。\cite{dean2008mapreduce}
+
+\lipsum
+
+\section{研究现状及挑战}
+
+研究现状及挑战。
+
+\section{研究内容与论文结构}
+
+研究内容与论文结构。
+
+\chapter{插入算法的示例}
+
+可用如下方式插入算法流程：
+
+
+\begin{breakablealgorithm}
+    \caption{ACP 调度器}
+    \label{algorithm: ACP}
+        \begin{algorithmic}[1]
+        \REQUIRE{要调度的作业集合$J$和资源集合$R$}
+        \FOR{each r $\in$ R}
+        %\STATE{test the c\_exec\_idx and the r\_exec\_idx of r with several benchmarking tools}
+        \STATE{使用基准测试工具对$r$进行测试}
+        \STATE{获取$r$的$storage_r$和$compute\_power_r$的值}
+        \STATE{将$storage_r$和$compute\_power_r$写入到资源限制中}
+        \ENDFOR
+        \WHILE{true}
+        \STATE{根据上次运行的结果，更新任务约束}
+        \FOR{each r $\in$ R}
+        \IF{r.schedular $\neq$ NULL}
+        \IF{r.runningtask $\neq$ NULL}
+        \STATE{rt $\leftarrow$ r.runningtask}
+        \STATE{st $\leftarrow$ rt.starttime}
+        \STATE{et $\leftarrow$ rt.endtime}
+        \STATE{pd $\leftarrow$ rt.performancedemand}
+        \STATE{sr $\leftarrow$ rt.scheduledresource}
+        \STATE{根据(rt, st, et, pd, sr)更新约束条件}
+        \STATE{$\slash\slash$ 根据任务的开始时间，结束时间，性能需求和其运行资源的性能添加一条约束}
+        \ELSE
+        \STATE{r.runningtask $\leftarrow$ NULL}
+        \STATE{$\slash\slash$ 将该任务设置为已完成}
+        \STATE{将 r.runningtask 从 r.schedular 中移除}
+        \STATE{pj $\leftarrow$ r.parentjob}
+        \IF{pj.schedular = NULL}
+        \STATE{从$J$中删除pj}
+        \ENDIF
+        \ENDIF
+        \ENDIF
+        \ENDFOR
+        \STATE{新建一个带有资源约束的模型}
+        \STATE{将任务约束加入到OPL模型中}
+        \STATE{将$J$和$R$作为约束添加到数据中}
+        \STATE{求解OPL模型}
+        \STATE{按照得出的最优解对任务进行分配}
+        \STATE{等待新的事件出现}
+        \ENDWHILE
+    \end{algorithmic}
+\end{breakablealgorithm}
+
+\chapter{一级标题}
+
+一级标题
+
+\section{二级标题}
+
+二级标题
+
+\subsection{三级标题}
+
+三级标题
+
+%最后设置格式，插入参考文献。
+\defaultfont
+\bibliographystyle{gbt7714-2005}
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{参考文献}
+\bibliography{document}
+%插入致谢
+\chapter*{致 \qquad 谢}
+\addcontentsline{toc}{chapter}{致谢}
+\thispagestyle{empty}
+本科生涯看似漫长却又一晃而过，回首走过的岁月，我感慨良多。从最初的论文选题、思路梳理到研讨交流、反复修改直至最终完稿，都离不开老师、同学和亲人们的支持和无私帮助，在此我要向他们表达我最诚挚的谢意。
+
+...
+
+求学生涯暂告段落，但求知之路却永无止境。我将倍加珍惜大学生活给予我的珍贵财富，不忘初心，砥砺前行！
+\chapter*{本科期间发表论文和科研情况}
+\addcontentsline{toc}{chapter}{本科期间发表论文和科研情况}
+\thispagestyle{empty}
+
+...
+
+\end{document}
