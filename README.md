@@ -7,6 +7,7 @@
 
 1. 请先安装[Haixing-Hu/GBT7714-2005-BibTeX-Style](https://github.com/Haixing-Hu/GBT7714-2005-BibTeX-Style)，它提供了符合我们学校标准的`GBT7714-2005`排版样式。
 2. 其次，请在`preface/cover.tex`中填入相关信息。
-3. 最后，在`document.tex`中写论文的主体就行啦。
+3. 然后，请将`jluthesisUTF8.sty`中的第`477`行改为你们要求的填写的时间。
+4. 最后，在`document.tex`中写论文的主体就行啦。
 
 希望我的这个模板可以让学弟学妹们少走点弯路`_(:з」∠)_`
